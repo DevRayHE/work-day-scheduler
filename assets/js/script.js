@@ -6,20 +6,25 @@ var dateDisplayEl = $("#currentDay");
 
 // For loop generate table row x 8, assgin relevant class and IDs to each.
 // Jquery to dynamically update html and css
-for (i = 0; i < 9; i++ ) {
-  if (i<3) {
-    var hour = (i + 9) + "AM";
-  } else if (i === 3) {
-    var hour = (i + 9) + "PM";
-  } else {
-    var hour = (i -3) + "PM";
-  }
+for (i = 9; i < 18; i++ ) {
+  // if (i<3) {
+  //   var hour = (i + 9) + "AM";
+  // } else if (i === 3) {
+  //   var hour = (i + 9) + "PM";
+  // } else {
+  //   var hour = (i -3) + "PM";
+  // }
+
+  var hour = moment(i,"H").format("hA");
+  console.log(hour);
 
   // Check and make all hour same length format, such as convert 9AM to 09AM.
-  if (hour.length !== 4) {
-    hour = "0" + hour;
-  }
+  // if (hour.length !== 4) {
+  //   hour = "0" + hour;
+  // }
   
+  var formRowEl = $("<form>");
+
   var timeTableRowEl = $("<tr>").addClass("row");
 
   var hourEl = $("<td>")
@@ -29,35 +34,27 @@ for (i = 0; i < 9; i++ ) {
   var inputRowEl = $("<td>")
     .addClass("col-8");
 
+  inputRowEl.append(formRowEl);
+
   // Assign each btn a unique ID for event listening
   var saveBtnEl = $("<td>")
-    .addClass("col-2")
-    .text("saveButton");
+    .addClass("col-2");
 
   $("<input>").attr({
     type:"button",
     id: hour+"Btn",
-  })
+    form: hour + "Input"})
   .addClass("saveBtn")
   .text("saveButton")
   .appendTo(saveBtnEl);
-
-
-    // .attr({
-    // type:"button",
-    // id: hour + "Btn",
-    // enable:true})
-    // .addClass("col-2 saveBtn")
-    // .text("saveButton")
  
-
   // Assign each input field a unique ID
   $("<input>").attr({ 
     type:"text", 
     id: hour + "Input",
     placeholder:"Available", 
     class:"time-block"})
-    .appendTo(inputRowEl);
+    .appendTo(formRowEl);
 
   timeTableRowEl.append(
     hourEl,
@@ -65,19 +62,31 @@ for (i = 0; i < 9; i++ ) {
     saveBtnEl
   );
 
+  // timeTableRowEl.append(formRowEl);
   timeTableDisplayEl.append(timeTableRowEl);
-
-  // eval("var " + )
-  // let timeHour = "9am";
-  // var inputArea = "";
-  // var saveBtn
 }
 
 
 // Add event listener to the timeblocks, based on target update relevant row only.
-$(":input").click(function (event) {
+$(":button").click(function (event) {
   console.log("clicked!");
-  console.log(event.target.id.substring(0,4));
+
+  event.preventDefault();
+  
+  var matchedStr = event.target.id.substring(0,3);
+  // console.log(matchedStr);
+  var matchedEl = $(":input").find(matchedStr);
+  // console.log(matchedEl);
+
+  // console.log($(event.target).prev().prev());
+  var theParentOfParent = $(event.target).parent();
+  var second = theParentOfParent.siblings().eq(1).children();
+  console.log(second);
+  var userInput = document.getElementById("9AMInput").value;
+  console.log(userInput);
+  // $(theParentOfParent:nth-child(2))
+  // var tar = event.target;
+  // console.log($(tar).prev().id);
 });
 
 
@@ -95,9 +104,10 @@ function displayDate() {
   var dateToday = moment().format("dddd, MMMM Do");
   dateDisplayEl.text(dateToday);
   console.log(dateToday);
+  console.log(moment().format("HHA"));
+  console.log(moment("9","H").format("HHA"));
 }
 
 displayDate();
-
 
 // Moment.js to compare curent time vs schedule time => dynamically update status of task
