@@ -57,12 +57,14 @@ function init() {
 
     let targetInput = $(event.target).parent().prev().children().children()[0];
     let userInput = targetInput.value.trim();
+    let targetID = targetInput.id;
 
-    localStorage.setItem(targetInput.id,userInput);
+    localStorage.setItem(targetID, userInput);
 
     // Notification on successfully saved event only
-    if (localStorage.getItem(targetInput.id) === userInput) {
-      console.log("saved successfully!");
+    if (localStorage.getItem(targetID) === userInput) {
+      let notify = targetID.substring(0, targetID.length -5) + " event saved☑️";
+      $(".notification").text(notify)
       $(".notification").css("visibility", "visible");
       setTimeout(function(){ $(".notification").css("visibility", "hidden"); } ,1000)
     }
