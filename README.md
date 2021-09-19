@@ -12,7 +12,7 @@
 
 # 🎇 Features
 
-- 
+- Multi-line text input field for multiple tasks within the hour.
 
 - 
 

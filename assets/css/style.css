@@ -80,6 +80,7 @@ input, textarea {
   left:0;
   right:0;
   resize:none;
+  line-height: 1.2;
 
   width:100%;
   border:none;
