@@ -56,17 +56,16 @@ function init() {
   $(":button").click(function (event) {
     console.log("clicked!");
 
-    // event.preventDefault();
-
     let targetInput = $(event.target).parent().prev().children().children()[0];
     let userInput = targetInput.value.trim();
 
     localStorage.setItem(targetInput.id,userInput);
 
     console.log("getITEM: " + localStorage.getItem(targetInput.id));
-
     console.log("userInput is: " + userInput);
     console.log("targetInputID: " + targetInput.id);
+    $(".notification").css("visibility", "visible");
+    setTimeout(function(){ $(".notification").css("visibility", "hidden"); } ,1000)
 
     updateSchedule();
   });
@@ -92,13 +91,9 @@ function updateSchedule() {
     textareaData[i].content = localStorage.getItem(textareaData[i].id);
   }
 
-  console.log(textareaData);
-
   for (let j=0; j<textareaData.length; j++) {
     if (textareaData[j].content) {
-      console.log(textareaData[j].id + " this IDs has conetent:  " + textareaData[j].content);
       $("#" + textareaData[j].id).text(textareaData[j].content);
-      console.log(textareaData[j].id);
     }
   }
 }
@@ -119,19 +114,16 @@ function updateTimeblockColor() {
 
     // Pass
     if ((moment(hourRowIdMoment).diff(hourNow) < 0)) {
-      console.log("Pass");
       $("#" + allHourEl[i].id ).next().toggleClass("past", true);
       $("#" + allHourEl[i].id ).next().toggleClass("present", false);
       $("#" + allHourEl[i].id ).next().toggleClass("future", false);
     } // Present
     else if ((moment(hourRowIdMoment).diff(hourNow)) === 0){
-      console.log("Present");
       $("#" + allHourEl[i].id ).next().toggleClass("past", false);
       $("#" + allHourEl[i].id ).next().toggleClass("present", true);
       $("#" + allHourEl[i].id ).next().toggleClass("future", false);
     } // Future
     else {
-      console.log("Future");
       $("#" + allHourEl[i].id ).next().toggleClass("past", false);
       $("#" + allHourEl[i].id ).next().toggleClass("present", false);
       $("#" + allHourEl[i].id ).next().toggleClass("future", true);

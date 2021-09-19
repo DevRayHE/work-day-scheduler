@@ -85,3 +85,12 @@ input, textarea {
   width:100%;
   border:none;
 }
+
+thead {
+  text-align: center;
+  border-style:hidden;
+}
+
+.notification {
+  visibility: hidden;
+}
