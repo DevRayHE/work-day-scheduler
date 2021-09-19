@@ -54,20 +54,20 @@ function init() {
 
   // Add event listener to the timeblocks, based on target update relevant row only.
   $(":button").click(function (event) {
-    console.log("clicked!");
 
     let targetInput = $(event.target).parent().prev().children().children()[0];
     let userInput = targetInput.value.trim();
 
     localStorage.setItem(targetInput.id,userInput);
 
-    console.log("getITEM: " + localStorage.getItem(targetInput.id));
-    console.log("userInput is: " + userInput);
-    console.log("targetInputID: " + targetInput.id);
-    $(".notification").css("visibility", "visible");
-    setTimeout(function(){ $(".notification").css("visibility", "hidden"); } ,1000)
-
-    updateSchedule();
+    // Notification on successfully saved event only
+    if (localStorage.getItem(targetInput.id) === userInput) {
+      console.log("saved successfully!");
+      $(".notification").css("visibility", "visible");
+      setTimeout(function(){ $(".notification").css("visibility", "hidden"); } ,1000)
+    }
+  
+    // updateSchedule();
   });
 
   displayDate();

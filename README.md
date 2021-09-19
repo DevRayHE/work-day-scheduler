@@ -6,7 +6,7 @@
 
 # 📓 Description
 
-### 
+### Calendar application that allows user to save events for each hour of the day. This app will run in the browser and feature dynamically updated HTML and CSS powered by jQuery.
 
 <br/>
 
@@ -14,11 +14,11 @@
 
 - Multi-line text input field for multiple tasks within the hour.
 
-- 
+- Timeblocks are color coded to indicate whether it is in the past, present of future.
 
-- 
+- Event is saved and presist when page refresh.
 
-- 
+- Notification on successful 
 
 - 
 
