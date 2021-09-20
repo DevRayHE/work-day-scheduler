@@ -72,6 +72,7 @@ function init() {
     // updateSchedule();
   });
 
+  // Calling these 3 functions after all page elements created to display todays date, update Schedule on the hour and set the time block color update on a 3 seconds timer.
   displayDate();
   updateSchedule();
   updateTimer();
@@ -137,11 +138,11 @@ function updateTimeblockColor() {
 }
 
 
-// Timer function to update time block color every 5 seconds
+// Timer function to update time block color every 3 seconds
 function updateTimer() {
   
   updateTimeblockColor();
-  
+
   timer = setInterval(function() {
     updateTimeblockColor();
     console.log("5seconds");

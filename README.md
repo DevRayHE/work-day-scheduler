@@ -18,11 +18,11 @@
 
 - Timeblocks are color coded to indicate whether it is in the past, present of future.
 
+- Timerblocks automatic updates without refresh of page
+
 - Event is saved and presist when page refresh.
 
 - Dynamic notification on successful saved event.
-
-- 
 
 <br/>
 
@@ -34,7 +34,7 @@
 
 ### Sample website intro video.
 
-![Sample gif video.](./assets/images/ "video")
+![Sample gif video.](./assets/images/work-day-scheduler.gif "video")
 
 <br/>
 
