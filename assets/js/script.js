@@ -73,8 +73,8 @@ function init() {
   });
 
   displayDate();
-  updateTimeblockColor();
   updateSchedule();
+  updateTimer();
 }
 
 // Update schedule by getting data from local storage
@@ -134,6 +134,18 @@ function updateTimeblockColor() {
 
   // var hourEl3 = $("#timeTableDisplay").find(".hour");
   // console.log(hourEl3);
+}
+
+
+// Timer function to update time block color every 5 seconds
+function updateTimer() {
+  
+  updateTimeblockColor();
+  
+  timer = setInterval(function() {
+    updateTimeblockColor();
+    console.log("5seconds");
+  }, 3000);
 }
 
 // Moment.js to display current date and time

@@ -12,18 +12,17 @@
 
 # 🎇 Features
 
+- Bootstrap, Jquery, Moment.js API featuers utilized.
+
 - Multi-line text input field for multiple tasks within the hour.
 
 - Timeblocks are color coded to indicate whether it is in the past, present of future.
 
 - Event is saved and presist when page refresh.
 
-- Notification on successful 
+- Dynamic notification on successful saved event.
 
 - 
-
-- 
-
 
 <br/>
 
