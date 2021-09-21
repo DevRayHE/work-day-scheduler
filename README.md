@@ -6,13 +6,17 @@
 
 # 📓 Description
 
-### Calendar application that allows user to save events for each hour of the day. This app will run in the browser and feature dynamically updated HTML and CSS powered by jQuery.
+### Calendar application that allows user to save events for each hour of the day. 
 
 <br/>
 
 # 🎇 Features
 
-- Bootstrap, Jquery, Moment.js API featuers utilized.
+- Mobile first responsive layout utilizing Bootstrap features.
+
+- Date, time features utilizing Moment.js
+
+- Dynamically updated HTML and CSS powered by JQuery.
 
 - Multi-line text input field for multiple tasks within the hour.
 

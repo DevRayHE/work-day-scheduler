@@ -99,3 +99,7 @@ thead {
 .notification {
   visibility: hidden;
 }
+
+.line-through {
+ text-decoration: line-through !important;
+}

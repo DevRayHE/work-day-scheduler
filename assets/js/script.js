@@ -72,6 +72,11 @@ function init() {
     // updateSchedule();
   });
 
+  // Add event listener to the timeblocks, double click to place line through text to indicate it's done.
+  $(".time-block").dblclick(function (event) {
+    $(event.target).toggleClass("line-through");
+  })
+
   // Calling these 3 functions after all page elements created to display todays date, update Schedule on the hour and set the time block color update on a 3 seconds timer.
   displayDate();
   updateSchedule();
@@ -137,7 +142,6 @@ function updateTimeblockColor() {
   // console.log(hourEl3);
 }
 
-
 // Timer function to update time block color every 3 seconds
 function updateTimer() {
   
@@ -145,7 +149,6 @@ function updateTimer() {
 
   timer = setInterval(function() {
     updateTimeblockColor();
-    console.log("5seconds");
   }, 3000);
 }
 
