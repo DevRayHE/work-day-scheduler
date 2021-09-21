@@ -55,26 +55,49 @@ function init() {
   // Add event listener to the timeblocks, based on target update relevant row only.
   $(":button").click(function (event) {
 
+    // Dom traverse to select the textarea of the save button
     let targetInput = $(event.target).parent().prev().children().children()[0];
-    let userInput = targetInput.value.trim();
-    let targetID = targetInput.id;
+    // let userInput = targetInput.value.trim();
+    let targetInputId = targetInput.id;
 
-    localStorage.setItem(targetID, userInput);
+    var userInput = {
+      id: targetInputId,
+      content: targetInput.value.trim(),
+      lineThrough: Boolean
+    };
+
+    if ($(targetInput).hasClass("line-through")) {
+      userInput.lineThrough = true;
+    } else {
+      userInput.lineThrough = false;
+    }
+
+    localStorage.setItem(targetInputId, JSON.stringify(userInput));
 
     // Notification on successfully saved event only
-    if (localStorage.getItem(targetID) === userInput) {
-      let notify = targetID.substring(0, targetID.length -5) + " event saved☑️";
+    if (JPLSGI(targetInputId).content === userInput.content) {
+      let notify = targetInputId.substring(0, targetInputId.length -5) + " event saved☑️";
       $(".notification").text(notify)
       $(".notification").css("visibility", "visible");
       setTimeout(function(){ $(".notification").css("visibility", "hidden"); } ,1000)
     }
   
-    // updateSchedule();
   });
 
   // Add event listener to the timeblocks, double click to place line through text to indicate it's done.
   $(".time-block").dblclick(function (event) {
-    $(event.target).toggleClass("line-through");
+    let targetEl = event.target;
+    // line through only applicable on time block which has events.
+    if (JPLSGI(targetEl.id).content) {
+      $(targetEl).toggleClass("line-through");
+      
+      // Get data from local storage and update line through status
+      let targetElData = JPLSGI(targetEl.id);
+      targetElData.lineThrough = $(targetEl).hasClass("line-through");
+      localStorage.setItem(targetEl.id, JSON.stringify(targetElData));
+    }
+    
+
   })
 
   // Calling these 3 functions after all page elements created to display todays date, update Schedule on the hour and set the time block color update on a 3 seconds timer.
@@ -88,22 +111,56 @@ function updateSchedule() {
 
   // Select all the textarea
   var textareaEl = $("textarea");
-  let textareaData = [];
 
-  // Loop through textarea elements and assign ids.
+  // Loop through textarea elements and get data from local storage 
   for (let i=0; i<textareaEl.length; i++) {
-    textareaData[i] = {id:"", content:""};
-    textareaData[i].id = textareaEl[i].id;
+    // Only updates event if stored data is on storage
+    if (localStorage.getItem(textareaEl[i].id)) {
+      let textareaData = {};
+      textareaData = JPLSGI(textareaEl[i].id);
+
+      if (textareaData) {
+        $("#" + textareaData.id).text(textareaData.content);
+        // Only toggle the line-through style if current displayed style does not match local storage data
+        if($(textareaEl[i]).hasClass("line-through") !== textareaData.lineThrough) {
+          $(textareaEl[i]).toggleClass("line-through");
+        }
+      }
+    }
+
+    // textareaData[i] = {
+    //   id:"",
+    //   content:"",
+    //   style:""
+    // };
+
+    // textareaData[i].id = textareaEl[i].id;
 
     // Get data from localStorage
-    textareaData[i].content = localStorage.getItem(textareaData[i].id);
+    // if (localStorage.getItem(textareaData[i].id)) {
+    //   textareaData[i].content = JSON.parse(localStorage.getItem(textareaData[i].id)).content;
+
+    //   // Display content to the time block if data is retrieved from local storage
+    //   if (textareaData[i].content) {
+    //     $("#" + textareaData[i].id).text(textareaData[i].content);
+    //   }
+    // }
+
+    // console.log(localStorage.getItem(textareaData[i].id));
+    // console.log(JSON.parse(localStorage.getItem(textareaData[i].id)));
   }
 
-  for (let j=0; j<textareaData.length; j++) {
-    if (textareaData[j].content) {
-      $("#" + textareaData[j].id).text(textareaData[j].content);
-    }
-  }
+  // Loop through data from localstorage, display data on relevant time block
+  // for (let j=0; j<textareaData.length; j++) {
+  //   if (textareaData[j].content) {
+  //     $("#" + textareaData[j].id).text(textareaData[j].content);
+  //   }
+  // }
+}
+
+// Define a function to perform JSON.parse(localStorage.getItem()) and return the value.
+function JPLSGI (para) {
+  return JSON.parse(localStorage.getItem(para));
 }
 
 // With Moment.js .diff() method, compare timeblock vs current time, update attributes accordingly.
