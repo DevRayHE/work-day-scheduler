@@ -85,22 +85,48 @@ function clickEventListener() {
       lineThrough: Boolean
     };
 
-    if ($(targetInput).hasClass("line-through")) {
-      userInput.lineThrough = true;
-    } else {
+    let targetTime = targetInputId.substring(0, targetInputId.length -5);
+    // Get content from local storage
+    let storageContent = JPLSGI(targetInputId).content;
+    let storageContentLineStatus = JPLSGI(targetInputId).lineThrough;
+    let inputContent = userInput.content;
+
+    // Prevent line through presist if content is cleared
+    if (!inputContent) {
       userInput.lineThrough = false;
+    } else if ($(targetInput).hasClass("line-through")) {
+      userInput.lineThrough = true
+    } else {
+      userInput.lineThrough = false
     }
 
-    localStorage.setItem(targetInputId, JSON.stringify(userInput));
+    // Display notification based on scenario
+    // Local sotrage content and user input both empty
+    if (!storageContent && !inputContent) {
+      displayNotification(targetTime + " event is empty❗");
+    } // Local sotrage has data but user input is empty, clearing event
+    else if (storageContent && !inputContent) {
+      // Trying to fix the bug where line through presist when event is cleared
+      // userInput.lineThrough = false
+      localStorage.setItem(targetInputId, JSON.stringify(userInput));
+      displayNotification(targetTime + " event cleared! ☑️");
 
-    // Notification on successfully saved event only
-    if (JPLSGI(targetInputId).content === userInput.content) {
-      let notify = targetInputId.substring(0, targetInputId.length -5) + " event saved☑️";
-      $(".notification").text(notify)
-      $(".notification").css("visibility", "visible");
-      setTimeout(function(){ $(".notification").css("visibility", "hidden"); } ,1000)
+      // Edge case bug fix - Force page to reload when content is cleared and linethrough was active, to prevent line through presist on event content cleared.
+      // Place this here so that reload happens after notification is displayed.
+      if (storageContent && storageContentLineStatus && !inputContent) {
+        location.reload();
+      }
+    } // Update event
+    else if (storageContent && inputContent) {
+      localStorage.setItem(targetInputId, JSON.stringify(userInput));
+      displayNotification(targetTime + " event updated ✅");
+    } // 
+    else if (!storageContent && inputContent) {
+      localStorage.setItem(targetInputId, JSON.stringify(userInput));
+      displayNotification(targetTime + " event saved ✔");
     }
-  
+
+    
   });
 
   // Add event listener to the timeblocks, double click to place line through text to indicate it's done.
@@ -146,6 +172,13 @@ function updateTimer() {
   timer = setInterval(function() {
     updateTimeblockColor();
   }, 3000);
+}
+
+// Display notification 
+function displayNotification(displayContent) {
+  $(".notification").text(displayContent)
+  $(".notification").css("visibility", "visible");
+  setTimeout(function(){ $(".notification").css("visibility", "hidden"); } ,1000)
 }
 
 // With Moment.js .diff() method, compare timeblock vs current time, update attributes accordingly.
