@@ -24,7 +24,7 @@ function createTimeBlocks() {
 
     var hourEl = $("<td>")
       .addClass("col-2 hour")
-      .attr("id","hour")
+      .attr("id",hour)
       .text(hour);
     
     var inputRowEl = $("<td>")
@@ -164,16 +164,19 @@ function updateTimeblockColor() {
 
     // Pass
     if ((moment(hourRowIdMoment).diff(hourNow) < 0)) {
+      console.log("past" + hourRowId);
       $("#" + allHourEl[i].id ).next().toggleClass("past", true);
       $("#" + allHourEl[i].id ).next().toggleClass("present", false);
       $("#" + allHourEl[i].id ).next().toggleClass("future", false);
     } // Present
     else if ((moment(hourRowIdMoment).diff(hourNow)) === 0){
+      console.log("present" + hourRowId);
       $("#" + allHourEl[i].id ).next().toggleClass("past", false);
       $("#" + allHourEl[i].id ).next().toggleClass("present", true);
       $("#" + allHourEl[i].id ).next().toggleClass("future", false);
     } // Future
     else {
+      console.log("future" + hourRowId);
       $("#" + allHourEl[i].id ).next().toggleClass("past", false);
       $("#" + allHourEl[i].id ).next().toggleClass("present", false);
       $("#" + allHourEl[i].id ).next().toggleClass("future", true);
