@@ -26,6 +26,8 @@
 
 - Event is saved and presist when page refresh.
 
+- Double click to mark event as done. (Able to mark future event as done!)
+
 - Dynamic notification on successful saved event.
 
 <br/>

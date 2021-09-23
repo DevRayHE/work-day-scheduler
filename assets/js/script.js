@@ -32,7 +32,9 @@ function createTimeBlocks() {
 
     // Assign each btn a unique ID for event listening
     let saveBtnEl = $("<td>")
-      .addClass("col-2");
+      .addClass("col-2 saveBtn");
+
+    let saveBtnTxt = $("<i>").text("Click me to save!");
 
     // Assign each input field a unique ID
     $("<textarea>").attr({ 
@@ -51,6 +53,7 @@ function createTimeBlocks() {
       .text("saveButton")
       .appendTo(saveBtnEl);
           
+    saveBtnEl.append(saveBtnTxt);
     inputRowEl.append(formRowEl);
 
     timeTableRowEl.append(
@@ -82,8 +85,8 @@ function clickEventListener() {
     }
   })
 
-   // Add event listener to the timeblocks, based on target update relevant row only.
-   $(":button").click(function (event) {
+  // Add event listener to the timeblocks, based on target update relevant row only.
+  $(":button").click(function (event) {
 
     // Dom traverse to select the textarea of the save button
     let targetInput = $(event.target).parent().prev().children().children()[0];
