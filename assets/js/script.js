@@ -34,8 +34,6 @@ function createTimeBlocks() {
     let saveBtnEl = $("<td>")
       .addClass("col-2 saveBtn");
 
-    let saveBtnTxt = $("<i>").text("Click me to save!");
-
     // Assign each input field a unique ID
     $("<textarea>").attr({ 
       type:"text", 
@@ -53,7 +51,6 @@ function createTimeBlocks() {
       .text("saveButton")
       .appendTo(saveBtnEl);
           
-    saveBtnEl.append(saveBtnTxt);
     inputRowEl.append(formRowEl);
 
     timeTableRowEl.append(
