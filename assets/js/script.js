@@ -131,9 +131,9 @@ function clickEventListener() {
       localStorage.setItem(targetInputId, JSON.stringify(userInput));
       displayNotification(targetTime + " event cleared! ☑️");
 
-      // Edge case bug fix - Force page to reload when content is cleared and linethrough was active, to prevent line through presist on event content cleared.
+      // Edge case bug fix - so that line-through does not show on place holder text
       if (storageContentLineStatus) {
-        location.reload();
+        $(targetInput).toggleClass("line-through");
       }
     } // Update event
     else if (storageContent && inputContent) {
