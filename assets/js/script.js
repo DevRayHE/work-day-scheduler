@@ -18,20 +18,20 @@ function init() {
 function createTimeBlocks() {
 
   for (i = 9; i < 18; i++ ) {
-    var hour = moment(i,"H").format("hA");
-    var timeTableRowEl = $("<tr>").addClass("row");
-    var formRowEl = $("<form>");
+    let hour = moment(i,"H").format("hA");
+    let timeTableRowEl = $("<tr>").addClass("row");
+    let formRowEl = $("<form>");
 
-    var hourEl = $("<td>")
+    let hourEl = $("<td>")
       .addClass("col-2 hour")
       .attr("id",hour)
       .text(hour);
     
-    var inputRowEl = $("<td>")
+    let inputRowEl = $("<td>")
       .addClass("col-8");
 
     // Assign each btn a unique ID for event listening
-    var saveBtnEl = $("<td>")
+    let saveBtnEl = $("<td>")
       .addClass("col-2");
 
     // Assign each input field a unique ID
@@ -72,63 +72,6 @@ function displayDate() {
 
 // Add event listener to button and timeblocks data
 function clickEventListener() {
-   // Add event listener to the timeblocks, based on target update relevant row only.
-   $(":button").click(function (event) {
-
-    // Dom traverse to select the textarea of the save button
-    let targetInput = $(event.target).parent().prev().children().children()[0];
-    let targetInputId = targetInput.id;
-
-    var userInput = {
-      id: targetInputId,
-      content: targetInput.value.trim(),
-      lineThrough: Boolean
-    };
-
-    let targetTime = targetInputId.substring(0, targetInputId.length -5);
-    // Get content from local storage
-    let storageContent = JPLSGI(targetInputId).content;
-    let storageContentLineStatus = JPLSGI(targetInputId).lineThrough;
-    let inputContent = userInput.content;
-
-    // Prevent line through presist if content is cleared
-    if (!inputContent) {
-      userInput.lineThrough = false;
-    } else if ($(targetInput).hasClass("line-through")) {
-      userInput.lineThrough = true
-    } else {
-      userInput.lineThrough = false
-    }
-
-    // Display notification based on scenario
-    // Local sotrage content and user input both empty
-    if (!storageContent && !inputContent) {
-      displayNotification(targetTime + " event is empty❗");
-    } // Local sotrage has data but user input is empty, clearing event
-    else if (storageContent && !inputContent) {
-      // Trying to fix the bug where line through presist when event is cleared
-      // userInput.lineThrough = false
-      localStorage.setItem(targetInputId, JSON.stringify(userInput));
-      displayNotification(targetTime + " event cleared! ☑️");
-
-      // Edge case bug fix - Force page to reload when content is cleared and linethrough was active, to prevent line through presist on event content cleared.
-      // Place this here so that reload happens after notification is displayed.
-      if (storageContent && storageContentLineStatus && !inputContent) {
-        location.reload();
-      }
-    } // Update event
-    else if (storageContent && inputContent) {
-      localStorage.setItem(targetInputId, JSON.stringify(userInput));
-      displayNotification(targetTime + " event updated ✅");
-    } // 
-    else if (!storageContent && inputContent) {
-      localStorage.setItem(targetInputId, JSON.stringify(userInput));
-      displayNotification(targetTime + " event saved ✔");
-    }
-
-    
-  });
-
   // Add event listener to the timeblocks, double click to place line through text to indicate it's done.
   $(".time-block").dblclick(function (event) {
     let targetEl = event.target;
@@ -138,6 +81,70 @@ function clickEventListener() {
       $(targetEl).toggleClass("line-through");
     }
   })
+
+   // Add event listener to the timeblocks, based on target update relevant row only.
+   $(":button").click(function (event) {
+
+    // Dom traverse to select the textarea of the save button
+    let targetInput = $(event.target).parent().prev().children().children()[0];
+    let targetInputId = targetInput.id;
+    let targetTime = targetInputId.substring(0, targetInputId.length -5);
+
+    var userInput = {
+      id: targetInputId,
+      content: targetInput.value.trim(),
+      lineThrough: Boolean
+    };
+
+    let inputContent = userInput.content;
+    // Prevent line through presist if content is cleared
+    if (!inputContent) {
+      userInput.lineThrough = false;
+    } else if ($(targetInput).hasClass("line-through")) {
+      userInput.lineThrough = true
+    } else {
+      userInput.lineThrough = false
+    }
+
+    // create empty local storage if it does not exist
+    if (!JPLSGI(targetInputId)) {
+      localStorage.setItem(targetInputId, JSON.stringify({
+        id:targetInputId,
+        content:"",
+        lineThrough:userInput.lineThrough
+      }));
+    }
+    
+    // Get content from local storage if storage has data only.
+    let storageContent = JPLSGI(targetInputId).content;
+    let storageContentLineStatus = JPLSGI(targetInputId).lineThrough;
+    
+    // Based on scneario, store event and display notification.
+    // Local sotrage content and user input both empty
+    if (!storageContent && !inputContent) {
+      displayNotification(targetTime + " event is empty❗");
+    } 
+    // Local sotrage has data but user input is empty
+    else if (storageContent && !inputContent) {
+      // Trying to fix the bug where line through presist when event is cleared
+      // userInput.lineThrough = false
+      localStorage.setItem(targetInputId, JSON.stringify(userInput));
+      displayNotification(targetTime + " event cleared! ☑️");
+
+      // Edge case bug fix - Force page to reload when content is cleared and linethrough was active, to prevent line through presist on event content cleared.
+      if (storageContentLineStatus) {
+        location.reload();
+      }
+    } // Update event
+    else if (storageContent && inputContent) {
+      localStorage.setItem(targetInputId, JSON.stringify(userInput));
+      displayNotification(targetTime + " event updated ✅");
+    } // New event
+    else if (!storageContent && inputContent) {
+      localStorage.setItem(targetInputId, JSON.stringify(userInput));
+      displayNotification(targetTime + " event saved ✔");
+    }
+  });
 }
 
 // Update schedule by getting data from local storage
